@@ -14,13 +14,13 @@ import DefaultTestSuites._
 import cde.{Parameters, Config, Dump, Knob}
 
 class DefaultConfig extends Config (
-  topDefinitions = { (pname,site,here) => 
+  topDefinitions = { (pname,site,here) =>
     type PF = PartialFunction[Any,Any]
     def findBy(sname:Any):Any = here[PF](site[Any](sname))(pname)
     def genCsrAddrMap: AddrMap = {
       val deviceTree = AddrMapEntry("devicetree", None, MemSize(1 << 15, AddrMapConsts.R))
       val csrSize = (1 << 12) * (site(XLen) / 8)
-      val csrs = (0 until site(NTiles)).map{ i => 
+      val csrs = (0 until site(NTiles)).map{ i =>
         AddrMapEntry(s"csr$i", None, MemSize(csrSize, AddrMapConsts.RW))
       }
       val scrSize = site(HtifKey).nSCR * (site(XLen) / 8)
@@ -133,7 +133,7 @@ class DefaultConfig extends Config (
       case StoreDataQueueDepth => 17
       case ReplayQueueDepth => 16
       case NMSHRs => Knob("L1D_MSHRS")
-      case LRSCCycles => 32 
+      case LRSCCycles => 32
       //L2 Memory System Params
       case NAcquireTransactors => 7
       case L2StoreDataQueueDepth => 1
@@ -186,7 +186,7 @@ class DefaultConfig extends Config (
       case LNEndpoints => site(TLKey(site(TLId))).nManagers + site(TLKey(site(TLId))).nClients
       case LNHeaderBits => log2Ceil(site(TLKey(site(TLId))).nManagers) +
                              log2Up(site(TLKey(site(TLId))).nClients)
-      case TLKey("L1toL2") => 
+      case TLKey("L1toL2") =>
         TileLinkParameters(
           coherencePolicy = new MESICoherence(site(L2DirectoryRepresentation)),
           nManagers = site(NBanksPerMemoryChannel)*site(NMemoryChannels) + 1,
@@ -202,7 +202,7 @@ class DefaultConfig extends Config (
                                   if (site(UseDma)) site(NDmaTransactors) + 1 else 1),
           maxManagerXacts = site(NAcquireTransactors) + 2,
           dataBits = site(CacheBlockBytes)*8)
-      case TLKey("L2toMC") => 
+      case TLKey("L2toMC") =>
         TileLinkParameters(
           coherencePolicy = new MEICoherence(new NullRepresentation(site(NBanksPerMemoryChannel))),
           nManagers = 1,
@@ -257,6 +257,16 @@ class DefaultConfig extends Config (
 class DefaultVLSIConfig extends DefaultConfig
 class DefaultCPPConfig extends DefaultConfig
 
+class FPU extends Config(
+  (pname,site,here) => pname match {
+      case UseFPU => true
+      case UseBackupMemoryPort => false
+      case MIFDataBits => 128
+  }
+)
+class PACOConfigFPU extends Config(new FPU ++ new DefaultConfig)
+
+
 class With2Cores extends Config(knobValues = { case "NTILES" => 2 })
 class With4Cores extends Config(knobValues = { case "NTILES" => 4 })
 class With8Cores extends Config(knobValues = { case "NTILES" => 8 })
@@ -292,7 +302,7 @@ class WithL2Cache extends Config(
       case NWays => Knob("L2_WAYS")
       case RowBits => site(TLKey(site(TLId))).dataBitsPerBeat
       case CacheIdBits => log2Ceil(site(NMemoryChannels) * site(NBanksPerMemoryChannel))
-    }: PartialFunction[Any,Any] 
+    }: PartialFunction[Any,Any]
     case NAcquireTransactors => 2
     case NSecondaryMisses => 4
     case L2DirectoryRepresentation => new FullRepresentation(site(NTiles))
