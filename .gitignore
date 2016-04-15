@@ -3,3 +3,15 @@ project/target
 *.swp
 *~
 .addons-dont-touch
+# remove fake subprojects
+chisel/
+context-dependent-environments/
+dramsim2/
+groundtest/
+hardfloat/
+junctions/
+riscv-tools
+rocket/
+torture/
+uncore/
+zscale/
