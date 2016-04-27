@@ -264,8 +264,17 @@ class FPU extends Config(
       case MIFDataBits => 128
   }
 )
-class PACOConfigFPU extends Config(new FPU ++ new DefaultConfig)
 
+class FPUCpp extends Config(
+  (pname,site,here) => pname match {
+      case UseFPU => true
+      case UseBackupMemoryPort => false
+      /* the emulator should not set 'MIFDataBits' since the emulator will fail to build */
+  }
+)
+
+class PACOConfigFPU extends Config(new FPU ++ new DefaultConfig)
+class PACOConfigCPP extends Config(new FPUCpp ++ new DefaultConfig)
 
 class With2Cores extends Config(knobValues = { case "NTILES" => 2 })
 class With4Cores extends Config(knobValues = { case "NTILES" => 4 })
