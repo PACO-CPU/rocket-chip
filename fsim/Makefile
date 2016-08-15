@@ -33,7 +33,6 @@ clean:
 	rm -rf $(junk) simv* csrc *.key DVE* *.h *.a *.daidir $(generated_dir)
 
 install: verilog
-	sed  "s/[/][/].clk_dirty_hax_0001[(]  [)]/.clk(clk),/" -i $(generated_dir)/Top.PACOConfigFPU.v
 	cp $(generated_dir)/Top.PACOConfigFPU.v $(RISCV)/../rocket-soc/rocket_soc/rocketlib/Top.GnssConfigNoFPU.v
 
 .PHONY: default all debug clean
