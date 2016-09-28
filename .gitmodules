@@ -1,0 +1,30 @@
+[submodule "zscale"]
+	path = zscale
+	url = https://github.com/PACO-CPU/zscale.git
+[submodule "uncore"]
+	path = uncore
+	url = https://github.com/PACO-CPU/uncore.git
+[submodule "torture"]
+	path = torture
+	url = https://github.com/PACO-CPU/torture.git
+[submodule "rocket"]
+	path = rocket
+	url = https://github.com/PACO-CPU/rocket.git
+[submodule "junctions"]
+	path = junctions
+	url = https://github.com/PACO-CPU/junctions.git
+[submodule "hardfloat"]
+	path = hardfloat
+	url = https://github.com/PACO-CPU/hardfloat.git
+[submodule "groundtest"]
+	path = groundtest
+	url = https://github.com/PACO-CPU/groundtest.git
+[submodule "dramsim2"]
+	path = dramsim2
+	url = https://github.com/PACO-CPU/dramsim2.git
+[submodule "context-dependent-environments"]
+	path = context-dependent-environments
+	url = https://github.com/PACO-CPU/context-dependent-environments.git
+[submodule "chisel"]
+	path = chisel
+	url = https://github.com/PACO-CPU/chisel.git
